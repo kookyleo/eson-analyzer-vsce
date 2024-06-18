@@ -1,20 +1,17 @@
 name: release
 on:
-  schedule:
-    - cron: "0 0 * * *" # midnight UTC
-
   workflow_dispatch:
-
+    ~
   push:
     branches:
       - release
-      - trigger-nightly
+      - beta
 
 env:
   CARGO_INCREMENTAL: 0
-  CARGO_NET_RETRY: 10
+  CARGO_NET_RETRY: 8
   RUSTFLAGS: "-D warnings -W unreachable-pub"
-  RUSTUP_MAX_RETRIES: 10
+  RUSTUP_MAX_RETRIES: 8
   FETCH_DEPTH: 0 # pull in the tags for the version string
   MACOSX_DEPLOYMENT_TARGET: 10.15
   CARGO_TARGET_AARCH64_UNKNOWN_LINUX_GNU_LINKER: aarch64-linux-gnu-gcc
@@ -80,7 +77,7 @@ jobs:
       - name: Install Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 18
+          node-version: 22
 
       - name: Update apt repositories
         if: matrix.target == 'aarch64-unknown-linux-gnu' || matrix.target == 'arm-unknown-linux-gnueabihf'
@@ -94,42 +91,29 @@ jobs:
         if: matrix.target == 'arm-unknown-linux-gnueabihf'
         run: sudo apt-get install gcc-arm-linux-gnueabihf
 
-      - name: Dist
-        run: cargo xtask dist --client-patch-version ${{ github.run_number }}
-
       - run: npm ci
-        working-directory: editors/code
+        working-directory: .
 
       - name: Package Extension (release)
         if: github.ref == 'refs/heads/release' && matrix.code-target
-        run: npx vsce package -o "../../dist/rust-analyzer-${{ matrix.code-target }}.vsix" --target ${{ matrix.code-target }}
-        working-directory: editors/code
+        run: npx vsce package -o "./dist/rust-analyzer-${{ matrix.code-target }}.vsix" --target ${{ matrix.code-target }}
+        working-directory: .
 
-      - name: Package Extension (nightly)
+      - name: Package Extension (beta)
         if: github.ref != 'refs/heads/release' && matrix.code-target
-        run: npx vsce package -o "../../dist/rust-analyzer-${{ matrix.code-target }}.vsix" --target ${{ matrix.code-target }} --pre-release
-        working-directory: editors/code
+        run: npx vsce package -o "./dist/rust-analyzer-${{ matrix.code-target }}.vsix" --target ${{ matrix.code-target }} --pre-release
+        working-directory: .
 
       - if: matrix.target == 'x86_64-unknown-linux-gnu'
-        run: rm -rf editors/code/server
+        run: rm -rf ./lsp/target/release/lsp
 
       - if: matrix.target == 'x86_64-unknown-linux-gnu' && github.ref == 'refs/heads/release'
-        run: npx vsce package -o ../../dist/rust-analyzer-no-server.vsix
-        working-directory: editors/code
+        run: npx vsce package -o ./dist/rust-analyzer-no-server.vsix
+        working-directory: .
 
       - if: matrix.target == 'x86_64-unknown-linux-gnu' && github.ref != 'refs/heads/release'
-        run: npx vsce package -o ../../dist/rust-analyzer-no-server.vsix --pre-release
-        working-directory: editors/code
-
-      - name: Run analysis-stats on rust-analyzer
-        if: matrix.target == 'x86_64-unknown-linux-gnu'
-        run: target/${{ matrix.target }}/release/rust-analyzer analysis-stats .
-
-      - name: Run analysis-stats on rust std library
-        if: matrix.target == 'x86_64-unknown-linux-gnu'
-        env:
-          RUSTC_BOOTSTRAP: 1
-        run: target/${{ matrix.target }}/release/rust-analyzer analysis-stats --with-deps $(rustc --print sysroot)/lib/rustlib/src/rust/library/std
+        run: npx vsce package -o ./dist/rust-analyzer-no-server.vsix --pre-release
+        working-directory: .
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v1
@@ -162,19 +146,19 @@ jobs:
         run: cargo xtask dist --client-patch-version ${{ github.run_number }}
 
       - run: npm ci
-        working-directory: editors/code
+        working-directory: .
 
       - name: Package Extension (release)
         if: github.ref == 'refs/heads/release'
-        run: npx vsce package -o "../../dist/rust-analyzer-alpine-x64.vsix" --target alpine-x64
-        working-directory: editors/code
+        run: npx vsce package -o "./dist/rust-analyzer-alpine-x64.vsix" --target alpine-x64
+        working-directory: .
 
-      - name: Package Extension (nightly)
+      - name: Package Extension (beta)
         if: github.ref != 'refs/heads/release'
-        run: npx vsce package -o "../../dist/rust-analyzer-alpine-x64.vsix" --target alpine-x64 --pre-release
-        working-directory: editors/code
+        run: npx vsce package -o "./dist/rust-analyzer-alpine-x64.vsix" --target alpine-x64 --pre-release
+        working-directory: .
 
-      - run: rm -rf editors/code/server
+      - run: rm -rf ./lsp/target/release/lsp
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v1
@@ -190,11 +174,11 @@ jobs:
       - name: Install Nodejs
         uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 22
 
       - run: echo "TAG=$(date --iso -u)" >> $GITHUB_ENV
         if: github.ref == 'refs/heads/release'
-      - run: echo "TAG=nightly" >> $GITHUB_ENV
+      - run: echo "TAG=beta" >> $GITHUB_ENV
         if: github.ref != 'refs/heads/release'
       - run: 'echo "TAG: $TAG"'
 
@@ -254,27 +238,29 @@ jobs:
       - run: rm dist/rust-analyzer-no-server.vsix
 
       - run: npm ci
-        working-directory: ./editors/code
+        working-directory: .
 
       - name: Publish Extension (Code Marketplace, release)
         if: github.ref == 'refs/heads/release' && (github.repository == 'rust-analyzer/rust-analyzer' || github.repository == 'rust-lang/rust-analyzer')
-        working-directory: ./editors/code
+        working-directory: .
         # token from https://dev.azure.com/rust-analyzer/
-        run: npx vsce publish --pat ${{ secrets.MARKETPLACE_TOKEN }} --packagePath ../../dist/rust-analyzer-*.vsix
+        run: npx vsce publish --pat ${{ secrets.MARKETPLACE_TOKEN }} --packagePath ./dist/rust-analyzer-*.vsix
 
       - name: Publish Extension (OpenVSX, release)
         if: github.ref == 'refs/heads/release' && (github.repository == 'rust-analyzer/rust-analyzer' || github.repository == 'rust-lang/rust-analyzer')
-        working-directory: ./editors/code
-        run: npx ovsx publish --pat ${{ secrets.OPENVSX_TOKEN }} --packagePath ../../dist/rust-analyzer-*.vsix
+        working-directory: .
+        run: npx ovsx publish --pat ${{ secrets.OPENVSX_TOKEN }} --packagePath ./dist/rust-analyzer-*.vsix
         timeout-minutes: 2
 
-      - name: Publish Extension (Code Marketplace, nightly)
+        # beta
+      - name: Publish Extension (Code Marketplace, beta)
         if: github.ref != 'refs/heads/release' && (github.repository == 'rust-analyzer/rust-analyzer' || github.repository == 'rust-lang/rust-analyzer')
-        working-directory: ./editors/code
-        run: npx vsce publish --pat ${{ secrets.MARKETPLACE_TOKEN }} --packagePath ../../dist/rust-analyzer-*.vsix --pre-release
+        working-directory: .
+        run: npx vsce publish --pat ${{ secrets.MARKETPLACE_TOKEN }} --packagePath ./dist/rust-analyzer-*.vsix --pre-release
 
-      - name: Publish Extension (OpenVSX, nightly)
+        # beta
+      - name: Publish Extension (OpenVSX, beta)
         if: github.ref != 'refs/heads/release' && (github.repository == 'rust-analyzer/rust-analyzer' || github.repository == 'rust-lang/rust-analyzer')
-        working-directory: ./editors/code
-        run: npx ovsx publish --pat ${{ secrets.OPENVSX_TOKEN }} --packagePath ../../dist/rust-analyzer-*.vsix
+        working-directory: .
+        run: npx ovsx publish --pat ${{ secrets.OPENVSX_TOKEN }} --packagePath ./dist/rust-analyzer-*.vsix
         timeout-minutes: 2
