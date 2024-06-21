@@ -94,7 +94,7 @@ jobs:
   
         - name: Dist
           working-directory: ./lsp
-          run: cargo build --verbose
+          run: cargo build --target ${{ matrix.target }}
       
         - run: npm ci
           working-directory: .
