@@ -103,7 +103,7 @@ jobs:
 
       - name: Package Extension (main)
         if: github.ref == 'refs/heads/main'
-        run: npx vsce package -o "./dist/rust-analyzer-alpine-x64.vsix" --target alpine-x64 --pre-release
+        run: npx vsce package -o "./dist/rust-analyzer-${{ matrix.code-target }}.vsix" --target ${{ matrix.code-target }} --pre-release
         working-directory: .
 
       - name: Upload artifacts
