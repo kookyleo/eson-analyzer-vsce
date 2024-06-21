@@ -6,7 +6,7 @@
     "type": "git",
     "url": "https://github.com/esonlang/eson-analyzer-vsce.git"
   },
-  "license": "SEE LICENSE IN ./LICENSE.txt",
+  "license": "SEE LICENSE IN LICENSE.txt",
   "icon": "icon.png",
   "version": "0.0.4",
   "engines": {
