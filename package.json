@@ -7,7 +7,7 @@
     "url": "https://github.com/esonlang/eson-analyzer-vsce.git"
   },
   "license": "SEE LICENSE IN ./LICENSE.txt",
-  "icon": "images/icon.png",
+  "icon": "icon.png",
   "version": "0.0.4",
   "engines": {
     "vscode": "^1.90.0"
@@ -25,7 +25,9 @@
   "files": [
     "out/**",
     "lsp/target/release/lsp-server",
-    "README.md"
+    "README.md",
+    "LICENSE.txt",
+    "icon.png"
   ],
   "main": "./out/extension.js",
   "contributes": {
