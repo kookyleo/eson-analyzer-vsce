@@ -94,7 +94,7 @@ jobs:
   
         - name: Dist
           working-directory: ./lsp
-          run: cargo build --release
+          run: cargo build --verbose
       
         - run: npm ci
           working-directory: .
