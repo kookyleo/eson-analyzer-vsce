@@ -94,9 +94,20 @@ jobs:
   
         - name: Dist
           working-directory: ./lsp
-          run: cargo build --verbose
+          run: cargo build --release
       
         - run: npm ci
           working-directory: .
           
+        - name: Package Extension (main)
+          if: github.ref == 'refs/heads/main'
+          run: npx vsce package -o "./dist/rust-analyzer-alpine-x64.vsix" --target alpine-x64 --pre-release
+          working-directory: .
+  
+        - name: Upload artifacts
+          uses: actions/upload-artifact@v1
+          with:
+            name: dist-x86_64-unknown-linux-musl
+            path: ./dist
+  
         
