@@ -92,3 +92,11 @@ jobs:
           if: matrix.target == 'arm-unknown-linux-gnueabihf'
           run: sudo apt-get install gcc-arm-linux-gnueabihf
   
+        - name: Dist
+          working-directory: ./lsp
+          run: cargo build --verbose
+      
+        - run: npm ci
+          working-directory: .
+          
+        
