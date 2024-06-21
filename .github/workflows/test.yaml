@@ -98,6 +98,9 @@ jobs:
       
         - run: npm ci
           working-directory: .
+        
+        - name: Create directory /dist
+          run: mkdir -p ./dist
           
         - name: Package Extension (main)
           if: github.ref == 'refs/heads/main'
