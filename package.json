@@ -70,6 +70,7 @@
   },
   "scripts": {
     "vscode:prepublish": "npm run compile",
+    "build": "npm run build-base -- --sourcemap",
     "package": "vsce package patch --no-dependencies --no-git-tag-version",
     "compile": "tsc -p ./",
     "watch": "tsc -watch -p ./",
