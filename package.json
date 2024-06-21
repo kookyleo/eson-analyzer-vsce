@@ -2,6 +2,11 @@
   "name": "eson-analyzer",
   "displayName": "eson-analyzer",
   "description": "Esonlang support for Visual Studio Code",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/esonlang/eson-analyzer-vsce.git"
+  },
+  "license": "SEE LICENSE IN ./LICENSE.txt",
   "icon": "images/icon.png",
   "version": "0.0.4",
   "engines": {
