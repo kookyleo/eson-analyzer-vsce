@@ -42,7 +42,7 @@ async function runOnce() {
   }
 
   // We also need to update the `dev` tag while we're at it on the `dev` branch.
-  if (name == 'nightly') {
+  if (name == 'main') {
     try {
       core.info(`updating nightly tag`);
       await octokit.rest.git.updateRef({
