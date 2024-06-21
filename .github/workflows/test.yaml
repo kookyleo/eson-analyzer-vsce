@@ -1,31 +1,60 @@
 name: Test
 
 on:
-    workflow_dispatch:
-      ~
+  workflow_dispatch:
+    ~
 
 env:
-    CARGO_INCREMENTAL: 0
-    CARGO_NET_RETRY: 8
-    RUSTFLAGS: "-D warnings -W unreachable-pub"
-    RUSTUP_MAX_RETRIES: 8
-    FETCH_DEPTH: 0 # pull in the tags for the version string
-    MACOSX_DEPLOYMENT_TARGET: 10.15
-    CARGO_TARGET_AARCH64_UNKNOWN_LINUX_GNU_LINKER: aarch64-linux-gnu-gcc
-    CARGO_TARGET_ARM_UNKNOWN_LINUX_GNUEABIHF_LINKER: arm-linux-gnueabihf-gcc
+  CARGO_TERM_COLOR: always
+  CARGO_INCREMENTAL: 0
+  CARGO_NET_RETRY: 8
+  RUSTFLAGS: "-D warnings -W unreachable-pub"
+  RUSTUP_MAX_RETRIES: 8
+  FETCH_DEPTH: 0 # pull in the tags for the version string
+  MACOSX_DEPLOYMENT_TARGET: 10.15
+  CARGO_TARGET_AARCH64_UNKNOWN_LINUX_GNU_LINKER: aarch64-linux-gnu-gcc
+  CARGO_TARGET_ARM_UNKNOWN_LINUX_GNUEABIHF_LINKER: arm-linux-gnueabihf-gcc
 
-
-    
 jobs:
-  build:
+  dist:
+      strategy:
+        matrix:
+          include:
+            - os: windows-latest
+              target: x86_64-pc-windows-msvc
+              code-target: win32-x64
+            - os: windows-latest
+              target: i686-pc-windows-msvc
+            - os: windows-latest
+              target: aarch64-pc-windows-msvc
+              code-target: win32-arm64
+            - os: ubuntu-latest
+              target: x86_64-unknown-linux-gnu
+              code-target: linux-x64
+              container: rockylinux:8
+            - os: ubuntu-latest
+              target: aarch64-unknown-linux-gnu
+              code-target: linux-arm64
+            - os: ubuntu-latest
+              target: arm-unknown-linux-gnueabihf
+              code-target: linux-armhf
+            - os: macos-14
+              target: x86_64-apple-darwin
+              code-target: darwin-x64
+            - os: macos-14
+              target: aarch64-apple-darwin
+              code-target: darwin-arm64
+  
+      name: dist (${{ matrix.target }})
+      runs-on: ${{ matrix.os }}
+      container: ${{ matrix.container }}
+  
+      env:
+        RA_TARGET: ${{ matrix.target }}
 
-    runs-on: ubuntu-latest
-
-    steps:
-    - uses: actions/checkout@v4
-    - name: Build
-      working-directory: ./lsp
-      run: cargo build --verbose
-    - name: Run tests
-      working-directory: ./lsp
-      run: cargo test --verbose
+      steps:
+        - name: Checkout repository
+          uses: actions/checkout@v4
+          with:
+            fetch-depth: ${{ env.FETCH_DEPTH }}
+        
