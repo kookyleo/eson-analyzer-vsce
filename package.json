@@ -69,11 +69,12 @@
     ]
   },
   "scripts": {
-    "vscode:prepublish": "pnpm run compile",
+    "vscode:prepublish": "npm run compile",
     "package": "vsce package patch --no-dependencies --no-git-tag-version",
     "compile": "tsc -p ./",
     "watch": "tsc -watch -p ./",
-    "pretest": "pnpm run compile && pnpm run lint",
+    "typecheck": "tsc",
+    "pretest": "npm run typecheck && npm run build",
     "lint": "eslint src --ext ts",
     "test": "vscode-test"
   },
