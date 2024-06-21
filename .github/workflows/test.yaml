@@ -1,0 +1,31 @@
+name: Test
+
+on:
+    workflow_dispatch:
+      ~
+
+env:
+    CARGO_INCREMENTAL: 0
+    CARGO_NET_RETRY: 8
+    RUSTFLAGS: "-D warnings -W unreachable-pub"
+    RUSTUP_MAX_RETRIES: 8
+    FETCH_DEPTH: 0 # pull in the tags for the version string
+    MACOSX_DEPLOYMENT_TARGET: 10.15
+    CARGO_TARGET_AARCH64_UNKNOWN_LINUX_GNU_LINKER: aarch64-linux-gnu-gcc
+    CARGO_TARGET_ARM_UNKNOWN_LINUX_GNUEABIHF_LINKER: arm-linux-gnueabihf-gcc
+
+
+    
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+    - name: Build
+      working-directory: ./lsp
+      run: cargo build --verbose
+    - name: Run tests
+      working-directory: ./lsp
+      run: cargo test --verbose
