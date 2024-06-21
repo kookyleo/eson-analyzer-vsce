@@ -160,10 +160,10 @@ jobs:
         with:
           name: dist-x86_64-pc-windows-msvc
           path: dist
-      - uses: actions/download-artifact@v1
-        with:
-          name: dist-i686-pc-windows-msvc
-          path: dist
+      # - uses: actions/download-artifact@v1
+      #   with:
+      #     name: dist-i686-pc-windows-msvc
+      #     path: dist
       - uses: actions/download-artifact@v1
         with:
           name: dist-aarch64-pc-windows-msvc
