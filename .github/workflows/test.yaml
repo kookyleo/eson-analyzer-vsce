@@ -94,9 +94,14 @@ jobs:
         working-directory: ./server
         run: cargo build --target ${{ matrix.target }} --release
 
-      - name: Move result to target directory
+      - name: Move result to target directory (Windows)
+        if: matrix.target == 'x86_64-pc-windows-msvc' || matrix.target == 'aarch64-pc-windows-msvc'
+        run: mv ./server/target/${{ matrix.target }}/release/lsp-server.exe ./lsp-server.exe
+
+      - name: Move result to target directory (Linux, MacOS)
+        if: matrix.target != 'x86_64-pc-windows-msvc' && matrix.target != 'aarch64-pc-windows-msvc'
         run: mv ./server/target/${{ matrix.target }}/release/lsp-server ./lsp-server
-        
+
       - run: npm ci
         working-directory: .
 
