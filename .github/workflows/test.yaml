@@ -92,7 +92,7 @@ jobs:
 
       - name: Dist
         working-directory: ./server
-        run: cargo build --target ${{ matrix.target }}
+        run: cargo build --target ${{ matrix.target }} --release
 
       - run: npm ci
         working-directory: .
