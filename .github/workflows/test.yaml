@@ -174,9 +174,14 @@ jobs:
       #     path: dist
       - run: ls -al ./dist
 
-      - name: Publish Release
-        uses: ./.github/actions/github-release
+      - name: Release
+        uses: softprops/action-gh-release@v2
         with:
           files: "dist/*"
-          name: ${{ env.TAG }}
-          token: ${{ secrets.GITHUB_TOKEN }}
+
+      # - name: Publish Release
+      #   uses: ./.github/actions/github-release
+      #   with:
+      #     files: "dist/*"
+      #     name: ${{ env.TAG }}
+      #     token: ${{ secrets.GITHUB_TOKEN }}
