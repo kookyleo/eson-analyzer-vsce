@@ -91,7 +91,7 @@ jobs:
         run: sudo apt-get install gcc-arm-linux-gnueabihf
 
       - name: Dist
-        working-directory: ./lsp
+        working-directory: ./server
         run: cargo build --target ${{ matrix.target }}
 
       - run: npm ci
