@@ -11,6 +11,9 @@ import {
 
 import {Uri} from "vscode";
 import { getExtensionVersion } from "./util";
+// import * as path from 'path';
+
+const root = __dirname;
 
 // This method is called when your extension is activated
 // Your extension is activated the very first time the command is executed
@@ -19,8 +22,10 @@ export function activate(context: vscode.ExtensionContext) {
   // This line of code will only be executed once when your extension is activated
   console.log('Congratulations, your extension "eson-analyzer" is now active!');
 
-  let lspServerBinUri = Uri.joinPath((context.storageUri || context.globalStorageUri), 'lsp-server');
-  vscode.window.showInformationMessage(`lspServerBinUri: ${lspServerBinUri}`).then(r => {});
+  // let lspServerBinUri = Uri.joinPath((context.storageUri || context.globalStorageUri), 'lsp-server');
+  // let lspServerBinUri = Uri.joinPath(root, 'lsp-server');
+  let lspServer = `${root}/server/release/lsp-server`;
+  vscode.window.showInformationMessage(`lspServerBin: ${lspServer}`).then(r => {});
   // /Users/leo/Library/Application%20Support/Code/User/globalStorage/esonlang.eson-analyzer/lsp-server
   // /Users/leo/.vscode/extensions/rust-lang.rust-analyzer-0.3.1995-darwin-arm64/server/rust-analyzer
   // /Users/leo/.cargo/bin/rust-analyzer
@@ -63,7 +68,7 @@ export function activate(context: vscode.ExtensionContext) {
   const traceOutputChannel = vscode.window.createOutputChannel(
     "Eson Language Server trace"
   );
-  const command = lspServerBinUri.fsPath;
+  const command = lspServer;
   const run: Executable = {
     command,
     options: {

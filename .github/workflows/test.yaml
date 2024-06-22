@@ -94,6 +94,12 @@ jobs:
         working-directory: ./server
         run: cargo build --target ${{ matrix.target }} --release
 
+      - name: check1
+        run: ls -al ./server/target/${{ matrix.target }}/release
+
+      - name: check2
+        run: du -sh ./server/target/${{ matrix.target }}/release
+
       - run: npm ci
         working-directory: .
 
