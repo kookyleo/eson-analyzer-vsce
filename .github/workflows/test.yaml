@@ -101,7 +101,7 @@ jobs:
         run: du -sh ./server/target/${{ matrix.target }}/release/lsp-server
 
       - name: check3
-        run: ls -al ./server/target
+        run: ls -al ./server/target/release
 
       - run: npm ci
         working-directory: .
