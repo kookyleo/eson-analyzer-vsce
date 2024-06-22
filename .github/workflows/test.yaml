@@ -94,14 +94,8 @@ jobs:
         working-directory: ./server
         run: cargo build --target ${{ matrix.target }} --release
 
-      - name: check1
-        run: ls -al ./server/target/${{ matrix.target }}/release/lsp-server
-
-      - name: check2
-        run: du -sh ./server/target/${{ matrix.target }}/release/lsp-server
-
-      - name: check3
-        run: ls -al ./server/target/release
+      - name: Move result to target directory
+        run: mv ./server/target/${{ matrix.target }}/release/lsp-server ./server/target/release/lsp-server
 
       - run: npm ci
         working-directory: .
