@@ -24,7 +24,7 @@
   ],
   "files": [
     "out/**",
-    "lsp/target/release/lsp-server",
+    "lsp-server/target/release/lsp-server",
     "README.md",
     "LICENSE.txt",
     "icon.png"

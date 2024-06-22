@@ -1,13 +1,13 @@
 use std::collections::HashMap;
 
 use dashmap::DashMap;
-use lsp::chumsky::{
+use lsp_server::chumsky::{
     parse, type_inference, Func, ImCompleteSemanticToken, ParserResult,
 };
-use lsp::completion::completion;
-use lsp::jump_definition::get_definition;
-use lsp::reference::get_reference;
-use lsp::semantic_token::{semantic_token_from_ast, LEGEND_TYPE};
+use lsp_server::completion::completion;
+use lsp_server::jump_definition::get_definition;
+use lsp_server::reference::get_reference;
+use lsp_server::semantic_token::{semantic_token_from_ast, LEGEND_TYPE};
 
 use ropey::Rope;
 use serde::{Deserialize, Serialize};
@@ -305,12 +305,12 @@ impl LanguageServer for Backend {
                     k.start,
                     k.end,
                     match v {
-                        lsp::chumsky::Value::Null => "null".to_string(),
-                        lsp::chumsky::Value::Bool(_) => "bool".to_string(),
-                        lsp::chumsky::Value::Num(_) => "number".to_string(),
-                        lsp::chumsky::Value::Str(_) => "string".to_string(),
-                        lsp::chumsky::Value::List(_) => "[]".to_string(),
-                        lsp::chumsky::Value::Func(_) => v.to_string(),
+                        lsp_server::chumsky::Value::Null => "null".to_string(),
+                        lsp_server::chumsky::Value::Bool(_) => "bool".to_string(),
+                        lsp_server::chumsky::Value::Num(_) => "number".to_string(),
+                        lsp_server::chumsky::Value::Str(_) => "string".to_string(),
+                        lsp_server::chumsky::Value::List(_) => "[]".to_string(),
+                        lsp_server::chumsky::Value::Func(_) => v.to_string(),
                     },
                 )
             })
@@ -357,7 +357,7 @@ impl LanguageServer for Backend {
             let mut ret = Vec::with_capacity(completions.len());
             for (_, item) in completions {
                 match item {
-                    lsp::completion::ImCompleteCompletionItem::Variable(var) => {
+                    lsp_server::completion::ImCompleteCompletionItem::Variable(var) => {
                         ret.push(CompletionItem {
                             label: var.clone(),
                             insert_text: Some(var.clone()),
@@ -366,7 +366,7 @@ impl LanguageServer for Backend {
                             ..Default::default()
                         });
                     }
-                    lsp::completion::ImCompleteCompletionItem::Function(
+                    lsp_server::completion::ImCompleteCompletionItem::Function(
                         name,
                         args,
                     ) => {
