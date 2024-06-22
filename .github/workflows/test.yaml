@@ -179,6 +179,7 @@ jobs:
         with:
           files: "dist/*"
           tag_name: "test"
+          name: "test"
 
       # - name: Publish Release
       #   uses: ./.github/actions/github-release
