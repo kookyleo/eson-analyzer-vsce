@@ -22,14 +22,7 @@
     "onLanguage:eson",
     "workspaceContains:**/.eson"
   ],
-  "files": [
-    "out/**",
-    "server/target/release/lsp-server",
-    "README.md",
-    "LICENSE.txt",
-    "icon.png"
-  ],
-  "main": "./out/extension.js",
+  "main": "./extension.js",
   "contributes": {
     "languages": [
       {
