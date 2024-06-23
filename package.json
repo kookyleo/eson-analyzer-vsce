@@ -70,10 +70,9 @@
   },
   "scripts": {
     "vscode:prepublish": "npm run compile",
-    "build": "node build.js",
+    "compile": "node build.js",
     "watch": "node build.js --watch",
     "package": "vsce package patch --no-dependencies --no-git-tag-version",
-    "compile": "tsc -p ./",
     "typecheck": "tsc",
     "pretest": "npm run typecheck && npm run build",
     "lint": "eslint src --ext ts",

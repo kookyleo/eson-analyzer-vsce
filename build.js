@@ -1,5 +1,6 @@
 // "build": "npm run build-base -- --sourcemap",
 // "watch": "tsc -watch -p ./",
+// "compile": "tsc -p ./",
 
 require('esbuild').build({
     entryPoints: ['src/extension.ts'],

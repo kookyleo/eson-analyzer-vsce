@@ -1,3 +1,9 @@
-src
-server
-node_modules
+**
+!icon.png
+!lsp-server
+!extension.js
+!language-configuration.json
+!LICENSE.txt
+!package-lock.json
+!package.json
+!README.md
