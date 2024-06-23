@@ -1,6 +1,6 @@
 import * as vscode from "vscode";
 
-export function getExtensionVersion(): string {
+export function version(): string {
     const extension = vscode.extensions.getExtension('esonlang.eson-analyzer');
     if (extension) {
         return extension.packageJSON.version;
@@ -9,14 +9,14 @@ export function getExtensionVersion(): string {
     }
 }
 
-export function getArch(): string {
+export function arch(): string {
     return process.arch;
 }
 
-export function getPlatform(): string {
+export function platform(): string {
     return process.platform;
 }
 
-export function getVscodeVersion(): string {
+export function vsc_version(): string {
     return vscode.version;
 }
