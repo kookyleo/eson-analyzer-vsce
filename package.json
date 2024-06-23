@@ -19,22 +19,30 @@
     "Formatters"
   ],
   "activationEvents": [
-    "onLanguage:eson",
     "workspaceContains:**/.eson"
   ],
   "main": "./extension.js",
   "contributes": {
-    "languages": [{
-      "id": "eson",
-      "aliases": ["esonlang", "eson"],
-      "extensions": ["eson"],
-      "configuration": "./language-configuration.json"
-    }],
-    "grammars": [{
-      "language": "eson",
-      "scopeName": "source.eson",
-      "path": "./syntaxes/eson.tmLanguage.json"
-    }],
+    "languages": [
+      {
+        "id": "eson",
+        "aliases": [
+          "esonlang",
+          "eson"
+        ],
+        "extensions": [
+          "eson"
+        ],
+        "configuration": "./language-configuration.json"
+      }
+    ],
+    "grammars": [
+      {
+        "language": "eson",
+        "scopeName": "source.eson",
+        "path": "./eson.tmLanguage.json"
+      }
+    ],
     "configuration": {
       "type": "object",
       "title": "eson-language-server",
