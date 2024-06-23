@@ -24,7 +24,7 @@ export function activate(context: vscode.ExtensionContext) {
 
   // let lspServerBinUri = Uri.joinPath((context.storageUri || context.globalStorageUri), 'lsp-server');
   // let lspServerBinUri = Uri.joinPath(root, 'lsp-server');
-  let lspServer = `${root}/server/release/lsp-server`;
+  let lspServer = `${root}/lsp-server`;
   vscode.window.showInformationMessage(`lspServerBin: ${lspServer}`).then(r => {});
   // /Users/leo/Library/Application%20Support/Code/User/globalStorage/esonlang.eson-analyzer/lsp-server
   // /Users/leo/.vscode/extensions/rust-lang.rust-analyzer-0.3.1995-darwin-arm64/server/rust-analyzer
