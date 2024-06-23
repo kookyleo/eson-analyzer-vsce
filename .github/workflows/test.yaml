@@ -95,11 +95,11 @@ jobs:
         run: cargo build --target ${{ matrix.target }} --release
 
       - name: Copy result to target directory (Windows)
-        if: matrix.target == 'x86_64-pc-windows-msvc' || matrix.target == 'aarch64-pc-windows-msvc'
-        run: cp ./server/target/${{ matrix.target }}/release/lsp-server.exe ./lsp-server
+        if: matrix.code-target == 'win32-x64' || matrix.code-target == 'win32-arm64'
+        run: cp ./server/target/${{ matrix.target }}/release/lsp-server.exe ./lsp-server.exe
 
       - name: Copy result to target directory (Linux, MacOS)
-        if: matrix.target != 'x86_64-pc-windows-msvc' && matrix.target != 'aarch64-pc-windows-msvc'
+        if: matrix.code-target != 'win32-x64' && matrix.code-target != 'win32-arm64'
         run: cp ./server/target/${{ matrix.target }}/release/lsp-server ./lsp-server
 
       - run: npm ci
