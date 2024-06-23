@@ -12,3 +12,4 @@ dist/
 *.vsix
 
 extension.js
+lsp-server
