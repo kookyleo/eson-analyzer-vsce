@@ -24,14 +24,17 @@
   ],
   "main": "./extension.js",
   "contributes": {
-    "languages": [
-      {
-        "id": "eson",
-        "extensions": [
-          ".eson"
-        ]
-      }
-    ],
+    "languages": [{
+      "id": "eson",
+      "aliases": ["esonlang", "eson"],
+      "extensions": ["eson"],
+      "configuration": "./language-configuration.json"
+    }],
+    "grammars": [{
+      "language": "eson",
+      "scopeName": "source.eson",
+      "path": "./syntaxes/eson.tmLanguage.json"
+    }],
     "configuration": {
       "type": "object",
       "title": "eson-language-server",

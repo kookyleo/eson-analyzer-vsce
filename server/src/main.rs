@@ -353,6 +353,12 @@ impl LanguageServer for Backend {
             let ast = self.ast_map.get(&uri.to_string())?;
             let char = rope.try_line_to_char(position.line as usize).ok()?;
             let offset = char + position.character as usize;
+            // dbg!("⭐️", &ast, &offset);
+            // [src/main.rs:356:13] &ast = Ref {
+            //     k: 0x000000014ba04340,
+            //     v: 0x000000014ba04358,
+            // }
+            // [src/main.rs:356:13] &offset = 490
             let completions = completion(&ast, offset);
             let mut ret = Vec::with_capacity(completions.len());
             for (_, item) in completions {
@@ -460,6 +466,7 @@ impl LanguageServer for Backend {
         Ok(None)
     }
 }
+
 #[derive(Debug, Deserialize, Serialize)]
 struct InlayHintParams {
     path: String,

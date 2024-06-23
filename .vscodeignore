@@ -4,6 +4,7 @@
 !lsp-server.exe
 !extension.js
 !language-configuration.json
+!eson.tmLanguage.json
 !LICENSE.txt
 !package-lock.json
 !package.json
